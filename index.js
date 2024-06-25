@@ -3,6 +3,27 @@ const express = require('express')  //Importar la libreria
 const app = express() //Inicializar la variable de la libreria
 const port = 3000 //Definir puerto a usar
 
+const mongoose = require('mongoose'); //importar la librería mongoose
+
+require('dotenv').config()
+const DB_CONNECTION = process.env.DB_CONNECTION || ''
+
+mongoose.connect(DB_CONNECTION) //crea la cadena
+
+//agregamos la configuracion del cors
+const cors = require('cors')
+app.use(cors());
+
+//importamos las rutas del otro archivo 
+app.use(express.urlencoded({extended: true})) //acceder a la informacion de las urls
+app.use(express.json()) //analizar la informacion en formato JSON
+const UserRoutes = require('./routes/UserRoutes')
+app.use('/', UserRoutes)
+
+const CarroRoutes = require('./routes/CarroRoutes')
+app.use('/', CarroRoutes)
+
+
 //Creando el servicio web
 //Funcionalidad  de la API
 //Existen muchos metodos : [get, post, put, patch, delete]
@@ -89,30 +110,30 @@ app.get('/mascota/:tipo', (req, res) => {
 })
 
 
-//Solicitud por GET
-app.get('/usuario', (req, res) => {
-    res.send("Estoy creand un usuario con GET")
-})
+// //Solicitud por GET
+// app.get('/usuario', (req, res) => {
+//     res.send("Estoy creand un usuario con GET")
+// })
 
-//solicitud por POST
-app.post('/usuario', (req, res) =>{
-    res.send("estoy creando un usuario")
-})
+// //solicitud por POST
+// app.post('/usuario', (req, res) =>{
+//     res.send("estoy creando un usuario")
+// })
 
-//solicitud por PUT
-app.put('/usuario', (req, res) =>{
-    res.send("estoy actualizando un usuario con PUT")
-}) 
+// //solicitud por PUT
+// app.put('/usuario', (req, res) =>{
+//     res.send("estoy actualizando un usuario con PUT")
+// }) 
 
-//solicitud por PATCH
-app.patch('/usuario', (req, res) => {
-    res.send("Estoy actualizando un usuario con PATCH")
-})
+// //solicitud por PATCH
+// app.patch('/usuario', (req, res) => {
+//     res.send("Estoy actualizando un usuario con PATCH")
+// })
 
-//solicitud por DELETE
-app.delete('/usuario', (req, res) => {
-    res.send("Estoy borrando un usuario con DELETE")
-})
+// //solicitud por DELETE
+// app.delete('/usuario', (req, res) => {
+//     res.send("Estoy borrando un usuario con DELETE")
+// })
 
 //ejecutar el servidor
 app.listen(port, () => {
